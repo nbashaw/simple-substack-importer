@@ -1,5 +1,6 @@
 require('dotenv').config();
 const express = require('express');
+const bodyParser = require('body-parser');
 const cors = require('cors');
 const app = express();
 const { createHash } = require('crypto');
@@ -8,11 +9,13 @@ const substack_key = process.env.SUBSTACK_IMPORT_KEY;
 const subdomain = process.env.SUBSTACK_SUBDOMAIN;
 const port = process.env.PORT || 3000;
 
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 app.use(cors());
 
 app.post('/import', async (req, res) => {
     if (!req.query.email) throw new Error('Need a query param with the email');
-    await postEmailToSubstack(req.query.email);
+    await postEmailToSubstack(req.body.email);
     res.sendStatus(200);
 });
 
