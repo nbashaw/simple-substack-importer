@@ -14,7 +14,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 app.post('/import', async (req, res) => {
-    if (!req.query.email) throw new Error('Need a query param with the email');
+    if (!req.body.email) throw new Error('Need an email address');
     await postEmailToSubstack(req.body.email);
     res.sendStatus(200);
 });
